@@ -30,11 +30,12 @@ const scene = new THREE.Scene()
     return new THREE.Mesh(sphereGeo, sphereMat);
     };
 
+
     const createPointLight = (i = 1, color = 0xd117ef) => {
         return new THREE.PointLight(color, i);
     }
 
-    
+
 
     const createElectron2 = (r = 0.7, color = 0x443FF4) => {
         const sphere = createSphere(r, color);
@@ -56,10 +57,50 @@ const scene = new THREE.Scene()
         }
     }
 
+    const tab = [10]
 
-    const e11 = createElectron3(0.5);
-    e11.sphere.position.set(0,10,0);
+    /**for(let i=1; i<10; i++)
+    {
+        
+        const i = createElectron3(0.5);
+        //i.sphere.position.set(0, 3 ,0);
+        i.sphere.position.x = 3;
+        i.sphere.position.y = 3;
+        i.sphere.position.z = 0;
+
+    
+        scene.add(i.pivot);
+        
+        tab[i] = i;
+        console.log(tab[i])
+        
+    }
+    */
+   
+    let tab2 = [];
+    for(let i =1; i < 10; i++)
+    {
+        let a = i;
+        let b = i;
+        console.log(a);
+        console.log(b);
+         a = createElectron3(0.5);
+        a.sphere.position.set(0,b + 1,0);
+        scene.add(a.pivot);
+        console.log(a);
+    }
+    
+     
+/**
+ *     
+let e11 = createElectron3(0.5);
+    e11.sphere.position.set(0,3,0);
     scene.add(e11.pivot);
+ */
+
+
+
+
 
     const nucleus = createSphere(1);
 const l1 = createPointLight();
@@ -154,9 +195,10 @@ const tick = () =>
 
     // Call tick again on the next frame
     window.requestAnimationFrame(tick)
-
-    e11.pivot.rotation.z -= 0.1;
-    e11.pivot.rotation.x -= 0.01;
+    
+    //e11.pivot.rotation.z -= 0.1;
+    //e11.pivot.rotation.x -= 0.01;
+    
 }
 
 tick()
