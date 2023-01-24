@@ -56,8 +56,31 @@ const scene = new THREE.Scene()
             pivot
         }
     }
-
-    const tab = [10]
+    let tab1 = [];
+    let tab2 = [];
+    //wczytajLiczby(10,5)
+    const wczytajLiczby = (a) => 
+        {
+            for(let i = 0; i < a; i++ )
+            {
+                let c = i;
+                let d = i;
+                tab1 = [c];
+                //console.log(a);
+                //console.log(b);
+                c = createElectron3(0.5);
+                tab2 = [d];
+                c.sphere.position.set(2 * d, 10,0);
+                scene.add(c.pivot);
+                console.log(c);
+                console.log(d);
+            } //for
+            return tab1, tab2;
+        }
+     wczytajLiczby(10)
+     
+     console.log(tab1)
+     console.log(tab2)
 
     /**for(let i=1; i<10; i++)
     {
@@ -75,22 +98,25 @@ const scene = new THREE.Scene()
         console.log(tab[i])
         
     }
-    */
-   
-    let tab2 = [];
-    for(let i =1; i < 10; i++)
+    
+    
+    for(let i =0; i < 9; i++)
     {
         let a = i;
         let b = i;
-        console.log(a);
-        console.log(b);
+        tab1 = [b];
+        //console.log(a);
+        //console.log(b);
          a = createElectron3(0.5);
-        a.sphere.position.set(0,b + 1,0);
+         tab2 = [a];
+        a.sphere.position.set(2 * b, 10,0);
         scene.add(a.pivot);
         console.log(a);
+        console.log(b);
+
     }
+    */
     
-     
 /**
  *     
 let e11 = createElectron3(0.5);
@@ -102,14 +128,14 @@ let e11 = createElectron3(0.5);
 
 
 
-    const nucleus = createSphere(1);
-const l1 = createPointLight();
-const l2 = createPointLight();
-l1.position.set(30, 5, 30);
-l2.position.set(-30, 15, 40);
+    const nucleus = createSphere(3);
+    const l1 = createPointLight();
+    const l2 = createPointLight();
+    l1.position.set(30, 5, 30);
+    l2.position.set(-30, 15, 40);
 
-scene.add(nucleus, l2);
-nucleus.add(l1);
+    scene.add(nucleus, l2);
+    nucleus.add(l1);
 
 /**
  * Lights
@@ -156,7 +182,7 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(2, 2, 10)
+camera.position.set(2, 2, 20)
 scene.add(camera)
 
 // Controls
@@ -196,8 +222,7 @@ const tick = () =>
     // Call tick again on the next frame
     window.requestAnimationFrame(tick)
     
-    //e11.pivot.rotation.z -= 0.1;
-    //e11.pivot.rotation.x -= 0.01;
+    
     
 }
 
