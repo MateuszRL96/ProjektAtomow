@@ -9,12 +9,33 @@ import * as dat from 'lil-gui'
  */
 // Debug
 const gui = new dat.GUI()
+const debugObject = {}
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
+
+//Colors
+
+
+    /**
+     * Stałeee
+     */
+    const parameters = {}
+    parameters.insideColor = '#ff6030'
+    parameters.outsideColor = '#1b3984'
+    parameters.radius = 5
+    parameters.firstCount = 10
+    parameters.secoundCount = 8
+    parameters.thirdCount = 18
+
+    let material = null
+    
+    let geometry = null
+
+
 
 /**
  * Floor
@@ -26,7 +47,9 @@ const scene = new THREE.Scene()
     const sphereMat = new THREE.MeshPhongMaterial({
         color,
         shininess: 40,
+        uDepthColor: { value: new THREE.Color(debugObject.depthColor) },
     })
+    
     return new THREE.Mesh(sphereGeo, sphereMat);
     };
 
@@ -37,15 +60,6 @@ const scene = new THREE.Scene()
 
 
 
-    const createElectron2 = (r = 0.7, color = 0x443FF4) => {
-        const sphere = createSphere(r, color);
-        const pivot = new THREE.Object3D();
-        pivot.add(sphere);
-        return {
-            sphere,
-            pivot
-        }
-    }
 
     const createElectron3 = (r = 0.7, color = 0xFAF3080) => {
         const sphere = createSphere(r, color);
@@ -59,10 +73,28 @@ const scene = new THREE.Scene()
     let tab1 = [];
     let tab2 = [];
     //wczytajLiczby(10,5)
-    const wczytajLiczby = (a) => 
+    const wczytajLiczby = (ilosc , promien) => 
         {
-            for(let i = 0; i < a; i++ )
+            /**
+             * Geometry
+             */
+            geometry = new THREE.BufferGeometry()
+
+            const position = new Float32Array(ilosc * 3)
+            const scales = new Float32Array(parameters.count * 1)
+
+            for(let i = 0; i < ilosc; i++ )
             {
+                const i3 = i * 3
+                // Position
+                const radius = Math.random() * promien
+
+                const branchAngle = (i % ilosc) / ilosc * Math.PI * 2
+
+                position[i3 + 0] = Math.cos(branchAngle) * radius
+                position[i3 + 1] = Math.sin(branchAngle) * radius
+                position[i3 + 2] = 0;
+                /*
                 let c = i;
                 let d = i;
                 tab1 = [c];
@@ -74,58 +106,30 @@ const scene = new THREE.Scene()
                 scene.add(c.pivot);
                 console.log(c);
                 console.log(d);
-            } //for
-            return tab1, tab2;
+                */
+                // Scale
+                 scales[i] = Math.random()
+            } 
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+
+            material = (r = 0.7, color = 0x443FF4) => {
+                const sphere = createSphere(r, color);
+                const pivot = new THREE.Object3D();
+                pivot.add(sphere);
+                return {
+                    sphere,
+                    pivot
+                }
+            }
         }
-     wczytajLiczby(10)
+
+     wczytajLiczby(10 , 10)
+
+
+
      
      console.log(tab1)
      console.log(tab2)
-
-    /**for(let i=1; i<10; i++)
-    {
-        
-        const i = createElectron3(0.5);
-        //i.sphere.position.set(0, 3 ,0);
-        i.sphere.position.x = 3;
-        i.sphere.position.y = 3;
-        i.sphere.position.z = 0;
-
-    
-        scene.add(i.pivot);
-        
-        tab[i] = i;
-        console.log(tab[i])
-        
-    }
-    
-    
-    for(let i =0; i < 9; i++)
-    {
-        let a = i;
-        let b = i;
-        tab1 = [b];
-        //console.log(a);
-        //console.log(b);
-         a = createElectron3(0.5);
-         tab2 = [a];
-        a.sphere.position.set(2 * b, 10,0);
-        scene.add(a.pivot);
-        console.log(a);
-        console.log(b);
-
-    }
-    */
-    
-/**
- *     
-let e11 = createElectron3(0.5);
-    e11.sphere.position.set(0,3,0);
-    scene.add(e11.pivot);
- */
-
-
-
 
 
     const nucleus = createSphere(3);
@@ -137,6 +141,7 @@ let e11 = createElectron3(0.5);
     scene.add(nucleus, l2);
     nucleus.add(l1);
 
+    
 /**
  * Lights
  */
@@ -182,7 +187,7 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(2, 2, 20)
+camera.position.set(0, 2, 30)
 scene.add(camera)
 
 // Controls
@@ -222,10 +227,7 @@ const tick = () =>
     // Call tick again on the next frame
     window.requestAnimationFrame(tick)
     
-    for(i=0;i<10;i++)
-        {
-            tab1[i];
-        }
+    
     
 }
 
